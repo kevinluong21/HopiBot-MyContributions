@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %} 
+    <form method="POST" action="">
+        <fieldset class="form-group">
+            <div class="form-check">
+                <div class="yours messages">
+                    <div class="message last">
+                        {{form.is_emergency.label(class="form-control-label")}}
+                    </div>
+                </div>
+                <div class="form-outline text">
+                    {{form.is_emergency(class="form-control", placeholder="Enter 'Yes' or 'No'")}}
+                </div>
+              </div>
+        </fieldset>
+        {{form.submitEmergency(type="hidden")}}
+    </form>
+{% endblock %}
