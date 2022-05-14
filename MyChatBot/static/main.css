@@ -1,3 +1,4 @@
+
 .messages {
     margin-top: 30px;
     display: flex;
@@ -82,9 +83,23 @@
     border-bottom-left-radius: 10px;
   }
 
-.text {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+.form-outline {
+  position: absolute;
+  width: 100%;
+  margin-left: 0px;
+  bottom: 0px;
+}
+
+.container {
+  height: 80vh;
+  position: relative;
+}
+
+.form-group {
+  height: 100%;
+}
+
+.form-check {
+  height: 100%;
 }
 

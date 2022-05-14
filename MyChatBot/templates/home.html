@@ -1,18 +1,98 @@
 {% extends "layout.html" %}
-{% block content %} 
-    <form method="POST" action="">
-        <fieldset class="form-group">
-            <div class="form-check">
-                <div class="yours messages">
-                    <div class="message last">
-                        {{form.is_emergency.label(class="form-control-label")}}
+{% block content %}
+
+<!-- Is this an emergency? -->
+<form method="POST" action="" id="emergency">
+    <fieldset class="form-group">
+        <!--Is this an emergency?-->
+        <div class="form-group">
+            <div class="yours messages">
+                <div class="message last" id="is-emergency-bubble">
+                    {{emergencyForm.emergency.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {% if emergencyForm.emergency.errors %}
+                <!-- User input -->
+                    {{emergencyForm.emergency(class="form-control", id="emergencyField", placeholder="Enter 'Yes' or 'No'")}}
+                    <div class="inform-feedback">
+                        {% for error in emergencyForm.emergency.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
                     </div>
+                {% else %}
+                <!-- User input -->
+                    {{emergencyForm.emergency(class="form-control", id="emergencyField", placeholder="Enter 'Yes' or 'No'")}}
+                {% endif %}
+            </div>
+        </div>
+    </fieldset>
+    {{emergencyForm.submit(type="hidden")}}
+</form>
+
+<!-- Response chat bubble (must run after submit)-->
+<div class="mine messages">
+    <div class="message last" id="emergency-response">{{emergencyForm.emergency.data}}</div>
+</div>
+
+<!-- Health Card Form -->
+<form method="POST" action="" id="healthcard">
+    <fieldset class="form-group">
+        <!--What is your health card number?-->
+        <div class="form-group">
+            <div class="yours messages">
+                <div class="message last" id="is-emergency-bubble">
+                    {{healthcardForm.healthcard.label(class="form-control-label")}}
                 </div>
-                <div class="form-outline text">
-                    {{form.is_emergency(class="form-control", placeholder="Enter 'Yes' or 'No'")}}
-                </div>
-              </div>
-        </fieldset>
-        {{form.submitEmergency(type="hidden")}}
-    </form>
+            </div>
+            <div class="form-outline text">
+                {% if healthcardForm.healthcard.errors %}
+                <!-- User input -->
+                    {{healthcardForm.healthcard(class="form-control", id="healthcardField", placeholder="Ex. 1234567890")}}
+                    <div class="inform-feedback">
+                        {% for error in healthcardForm.healthcard.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                <!-- User input -->
+                    {{healthcardForm.healthcard(class="form-control", id="healthcardField", placeholder="Ex. 1234567890")}}
+                {% endif %}
+            </div>
+        </div>
+    </fieldset>
+    {{healthcardForm.submit(type="hidden")}}
+</form>
+
+<!-- Response bubble -->
+<div class="mine messages">
+    <div class="message last" id="healthcard-response">{{healthcardForm.healthcard.data}} </div>
+</div>
+
 {% endblock %}
+{% block script %}
+<script>
+    $("#emergency-response").hide();
+    $("#healthcard-response").hide();
+    $("#healthcard").hide();
+
+    
+    $("#emergency").submit(function(e) {
+        //e.preventDefault();
+        $("#emergency-response").show();
+        $("#healthcard").show();
+        $("#emergencyField").hide();
+    });
+
+    $("#healthcard").submit(function(e) {
+        //e.preventDefault();
+        $("#healthcard-response").show();
+        // $("#healthcard").show();
+        // $("#emergencyField").hide();
+    });
+
+</script>
+{% endblock %}
+
+
+ 

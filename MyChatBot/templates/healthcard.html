@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+<form method="POST" action="" id="emergency">
+    <fieldset class="form-group">
+        <!--Is this an emergency?-->
+        <div class="form-group">
+            <div class="yours messages">
+                <div class="message last" id="is-emergency-bubble">
+                    {{emergencyForm.emergency.label(class="form-control-label")}}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<div class="mine messages">
+    <div class="message last" id="emergency-response">{{emergencyForm.emergency.data}}</div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    $("#emergency").submit(function(e) {
+        $("#emergency-response").show();
+    });
+    $("#emergency-response").hide();
+</script>
+{% endblock %}
