@@ -97,9 +97,16 @@
 
 .form-group {
   height: 100%;
+  margin-bottom: 100px;
 }
 
 .form-check {
   height: 100%;
 }
 
+.form-control {
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 20px;
+  width: 65% !important;
+}

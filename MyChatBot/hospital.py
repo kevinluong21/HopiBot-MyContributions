@@ -1,6 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, request
-from form import Emergency, HealthCard, VersionCode, Names, DOB, PhoneNumber, Symptoms, MedicalConditions
-#from form import RegistrationForm
+from form import RegistrationForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 #import the SQL database
@@ -47,19 +46,8 @@ class MedCon(db.Model):
 @app.route("/", methods=['GET','POST']) #creates a new home page and functions underneath run on this page unless it encounters another route method (i think)
 @app.route("/home", methods=['GET','POST'])
 def home():
-    db.create_all()
-    emergencyForm = Emergency()
-    healthcardForm = HealthCard()
-    if emergencyForm.emergency.data == None:
-        patient = Patient()
-        if healthcardForm.validate_on_submit():
-            patient.healthcard = healthcardForm.healthcard.data
-            db.session.add(patient)
-            db.session.commit()
-
-        
-    
-    return render_template("home.html", Patient = Patient, emergencyForm = emergencyForm, healthcardForm = healthcardForm)
+    form = RegistrationForm()
+    return render_template("home.html", form = form)
 
 if __name__ == '__main__': #allows us to run the file using only "python filename.py"
     app.run(debug=True)

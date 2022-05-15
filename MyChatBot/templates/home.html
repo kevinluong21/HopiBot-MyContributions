@@ -2,95 +2,407 @@
 {% block content %}
 
 <!-- Is this an emergency? -->
-<form method="POST" action="" id="emergency">
-    <fieldset class="form-group">
-        <!--Is this an emergency?-->
-        <div class="form-group">
-            <div class="yours messages">
-                <div class="message last" id="is-emergency-bubble">
-                    {{emergencyForm.emergency.label(class="form-control-label")}}
-                </div>
-            </div>
-            <div class="form-outline text">
-                {% if emergencyForm.emergency.errors %}
-                <!-- User input -->
-                    {{emergencyForm.emergency(class="form-control", id="emergencyField", placeholder="Enter 'Yes' or 'No'")}}
-                    <div class="inform-feedback">
-                        {% for error in emergencyForm.emergency.errors %}
-                            <span>{{error}}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                <!-- User input -->
-                    {{emergencyForm.emergency(class="form-control", id="emergencyField", placeholder="Enter 'Yes' or 'No'")}}
-                {% endif %}
-            </div>
-        </div>
-    </fieldset>
-    {{emergencyForm.submit(type="hidden")}}
-</form>
-
-<!-- Response chat bubble (must run after submit)-->
-<div class="mine messages">
-    <div class="message last" id="emergency-response">{{emergencyForm.emergency.data}}</div>
+    
+<div class="yours messages">
+    <div class="message" id="is-emergency-bubble">
+        <b>This service is intended for non-emergency use only. <br>
+            If it is an emergency, please call 9-1-1 or get to the hospital immediately.<br></b>
+    </div>
 </div>
 
 <!-- Health Card Form -->
-<form method="POST" action="" id="healthcard">
+<form method="POST" action="">
     <fieldset class="form-group">
-        <!--What is your health card number?-->
-        <div class="form-group">
+        <!--Health Card Number-->
+        <div class="form-group" id="healthcard">
             <div class="yours messages">
-                <div class="message last" id="is-emergency-bubble">
-                    {{healthcardForm.healthcard.label(class="form-control-label")}}
+                <div class="message last" id="healthcard-bubble">
+                    {{form.health_card.label(class="form-control-label")}}
                 </div>
             </div>
             <div class="form-outline text">
-                {% if healthcardForm.healthcard.errors %}
-                <!-- User input -->
-                    {{healthcardForm.healthcard(class="form-control", id="healthcardField", placeholder="Ex. 1234567890")}}
+                {{form.health_card(class="form-control", id="healthcardField", placeholder="Ex: '1234567890'", onKeyPress="showNextBlockStr('healthcard', 'versioncode')")}}                
+                
+                {% if form.health_card.errors %}
                     <div class="inform-feedback">
-                        {% for error in healthcardForm.healthcard.errors %}
+                        {% for error in form.health_card.errors %}
                             <span>{{error}}</span>
                         {% endfor %}
                     </div>
-                {% else %}
-                <!-- User input -->
-                    {{healthcardForm.healthcard(class="form-control", id="healthcardField", placeholder="Ex. 1234567890")}}
                 {% endif %}
             </div>
         </div>
-    </fieldset>
-    {{healthcardForm.submit(type="hidden")}}
-</form>
 
-<!-- Response bubble -->
-<div class="mine messages">
-    <div class="message last" id="healthcard-response">{{healthcardForm.healthcard.data}} </div>
-</div>
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="healthcard-response" style="display: none"></div>
+        </div>
+
+        <!--Version Code-->
+        <div class="form-group" id="versioncode" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="versioncode-bubble">
+                    {{form.version_code.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.version_code(class="form-control", id="versioncodeField", placeholder="Ex: 'AB'", onKeyPress="showNextBlockStr('versioncode', 'firstname')")}}
+                {% if form.version_code.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.version_code.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="versioncode-response" style="display: none"></div>
+        </div>
+
+        <!-- First Name -->
+        <div class="form-group" id="firstname" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="firstname-bubble">
+                    {{form.first_name.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.first_name(class="form-control", id="firstnameField", placeholder="Ex: 'John'", onKeyPress="showNextBlockStr('firstname', 'lastname')")}}
+                {% if form.first_name.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.first_name.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="firstname-response" style="display: none"></div>
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group" id="lastname" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="lastname-bubble">
+                    {{form.last_name.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.last_name(class="form-control", id="lastnameField", placeholder="Ex: 'Doe'", onKeyPress="showNextBlockStr('lastname', 'dob')")}}
+                {% if form.last_name.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.last_name.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="lastname-response" style="display: none"></div>
+        </div>
+
+        <!-- DOB -->
+        <div class="form-group" id="dob" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="dob-bubble">
+                    {{form.dob.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.dob(class="form-control", id="dobField", placeholder="YYYY-MM-DD", onKeyPress="showNextBlockStr('dob', 'housenumber')")}}
+                {% if form.dob.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.dob.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="dob-response" style="display: none"></div>
+        </div>
+
+         <!-- House Number -->
+         <div class="form-group" id="housenumber" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="housenumber-bubble">
+                    {{form.house_number.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.house_number(class="form-control", id="housenumberField", placeholder="ex. 123", onKeyPress="showNextBlockStr('housenumber', 'street')")}}
+                {% if form.house_number.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.house_number.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="housenumber-response" style="display: none"></div>
+        </div>
+
+        <!-- Street -->
+        <div class="form-group" id="street" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="street-bubble">
+                    {{form.street.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.street(class="form-control", id="streetField", placeholder="ex. Road Drive", onKeyPress="showNextBlockStr('street', 'city')")}}
+                {% if form.street.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.street.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="street-response" style="display: none"></div>
+        </div>
+
+        <!-- City -->
+        <div class="form-group" id="city" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="city-bubble">
+                    {{form.city.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.city(class="form-control", id="cityField", placeholder="ex. Toronto", onKeyPress="showNextBlockStr('city', 'province')")}}
+                {% if form.city.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.city.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="city-response" style="display: none"></div>
+        </div>
+
+        <!-- Province -->
+        <div class="form-group" id="province" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="province-bubble">
+                    {{form.province.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.province(class="form-control", id="provinceField", placeholder="ex. Ontario", onKeyPress="showNextBlockStr('province', 'country')")}}
+                {% if form.province.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.province.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="province-response" style="display: none"></div>
+        </div>
+
+        <!-- Country -->
+        <div class="form-group" id="country" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="country-bubble">
+                    {{form.country.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.country(class="form-control", id="countryField", placeholder="ex. Canada", onKeyPress="showNextBlockStr('country', 'mobilephone')")}}
+                {% if form.country.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.country.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="country-response" style="display: none"></div>
+        </div>
+
+        <!-- Mobile Phone -->
+        <div class="form-group" id="mobilephone" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="mobilephone-bubble">
+                    {{form.mobile_phone.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.mobile_phone(class="form-control", id="mobilephoneField", placeholder="6131234567", onKeyPress="showNextBlockStr('mobilephone', 'homephone')")}}
+                {% if form.mobile_phone.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.mobile_phone.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="mobilephone-response" style="display: none"></div>
+        </div>
+
+        <!-- Home Phone -->
+        <div class="form-group" id="homephone" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="homephone-bubble">
+                    {{form.home_phone.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.home_phone(class="form-control", id="homephoneField", placeholder="6131234567", onKeyPress="showNextBlockStr('homephone', 'symptoms')")}}
+                {% if form.home_phone.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.home_phone.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="homephone-response" style="display: none"></div>
+        </div>
+
+        <!-- Symptoms -->
+        <div class="form-group" id="symptoms" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="symptoms-bubble">
+                    {{form.symptoms.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.symptoms(class="form-control", id="symptomsField", onKeyPress="showNextBlock('symptoms', 'medicalconditions')")}}
+                {% if form.symptoms.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.symptoms.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="symptoms-response" style="display: none"></div>
+        </div>
+
+        <!-- Medical Conditions -->
+        <div class="form-group" id="medicalconditions" style="display: none">
+            <div class="yours messages">
+                <div class="message last" id="medicalconditions-bubble">
+                    {{form.medical_conditions.label(class="form-control-label")}}
+                </div>
+            </div>
+            <div class="form-outline text">
+                {{form.medical_conditions(class="form-control", id="medicalconditionsField", onKeyPress="showNextBlock('medicalconditions', 'medicalconditions')")}}
+                {% if form.medical_conditions.errors %} 
+                    <div class="inform-feedback">
+                        {% for error in form.medical_conditions.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!--Response Bubble-->
+        <div class="mine messages">
+            <div class="message last" id="medicalconditions-response" style="display: none"></div>
+        </div>
+    </fieldset>
+    
+</form>
 
 {% endblock %}
 {% block script %}
 <script>
-    $("#emergency-response").hide();
-    $("#healthcard-response").hide();
-    $("#healthcard").hide();
-
     
-    $("#emergency").submit(function(e) {
-        //e.preventDefault();
-        $("#emergency-response").show();
-        $("#healthcard").show();
-        $("#emergencyField").hide();
-    });
+    function displayMulti(block) {
+        if (event.keyCode == 13) {
+            var x = document.getElementById(block + "Field");
+            results = "";
+            for (let i = 0; i < x.length; i++) {
+                if (x.options[i].selected) {
+                    results += x.options[i].value + ", "
+                }
+            }
+            results = results.substring(0, results.lastIndexOf(","));
+        }
 
-    $("#healthcard").submit(function(e) {
-        //e.preventDefault();
-        $("#healthcard-response").show();
-        // $("#healthcard").show();
-        // $("#emergencyField").hide();
-    });
+        return results;
+    }
+    //for multiselect
+    function showNextBlock(block, next) {
+        if (event.keyCode == 13) {
+            var x = document.getElementById(block + "Field");
+            results = displayMulti(block);
 
+            document.getElementById(block + "-response").style.display = "block";
+            document.getElementById(block + "-response").innerHTML = results;
+            document.getElementById(next).style.display = "block";
+            x.style.display = "none";
+        }
+    }
+
+    //for strings
+    function showNextBlockStr(block, next) {
+        if (event.keyCode == 13) {
+            var x = document.getElementById(block + "Field");
+            document.getElementById(block + "-response").style.display = "block";
+            document.getElementById(block + "-response").innerHTML = x.value;
+            document.getElementById(next).style.display = "block";
+            x.style.display = "none";
+        }
+    }
+
+
+    function toTitleCase(name) {
+        return name.replace(
+            /\w\S*/g, (txt) => {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+        );
+    }
 </script>
 {% endblock %}
 
