@@ -6,30 +6,22 @@ import requests
 import json
 import math
 
-from hospital import Patient
-
 API_KEY = 'AIzaSyDkvVLM_wuruRZGERL0ZsMCAWfgBarVrEQ'
 account_sid = 'AC41e0182be023d4100adb8c6928fdca7f'
 auth_token = '1e8b2418b4920164ed2756dca1a63278'
 client = Client(account_sid, auth_token)
 
-descending = Patient.query.order_by(Patient.id.desc())
-patient = descending.first()
-
-# print(patient.address)
-# print(patient.mobile_phone)
 
 class Phone():
     sid = 'MGf240f55269be853d1089f92e87860b1d'
 
     def __init__(self, hospital, time, number):
         self.hospital = hospital
-        # doctor or nurse inputs the time, but for now time is 10 minutes
+        # doctor or nurse inputs the time, but for now time is 40 minutes
         self.time = time
         self.number = number
 
     # sends a message with hospital, arrival // departure time and hospital google maps link
-    # TODO: we can change the time to include driving time ... idk if this is necessary tho
     def send_message(self):
         message = client.messages.create(
             messaging_service_sid='MGf240f55269be853d1089f92e87860b1d',
@@ -53,9 +45,9 @@ def get_lat_lng(address):
     return lat, lng
 
 # finding the nearest hospital, returned in the form
-def find_hospital():
+def find_hospital(address):
 
-    lat, lng = get_lat_lng(patient.address)
+    lat, lng = get_lat_lng(address)
 
     radius = 5000
 
@@ -84,7 +76,3 @@ def find_hospital():
             closest_hospital = (place.name, distance)
 
     return closest_hospital
-
-# the 10 is temporary, just there bc we dont currently have a way to communicate with the hospital TT
-text = Phone(find_hospital(), 10, patient.mobile_phone)
-text.send_message()
