@@ -11,7 +11,8 @@
 </div>
 
 <!-- Health Card Form -->
-<form method="POST" action="">
+<form method="POST" action="" id="register" style="padding-bottom: 5%;">
+    {{ form.csrf_token }}
     <fieldset class="form-group">
         <!--Health Card Number-->
         <div class="form-group" id="healthcard">
@@ -334,7 +335,7 @@
                 </div>
             </div>
             <div class="form-outline text">
-                {{form.medical_conditions(class="form-control", id="medicalconditionsField", onKeyPress="showNextBlock('medicalconditions', 'medicalconditions')")}}
+                {{form.medical_conditions(class="form-control", id="medicalconditionsField", onKeyPress="showNextBlock('medicalconditions', 'medicalconditions'), submitForm()")}}
                 {% if form.medical_conditions.errors %} 
                     <div class="inform-feedback">
                         {% for error in form.medical_conditions.errors %}
@@ -349,8 +350,8 @@
         <div class="mine messages">
             <div class="message last" id="medicalconditions-response" style="display: none"></div>
         </div>
+
     </fieldset>
-    
 </form>
 
 {% endblock %}
@@ -395,15 +396,46 @@
         }
     }
 
-
-    function toTitleCase(name) {
-        return name.replace(
-            /\w\S*/g, (txt) => {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            }
-        );
+    function submitForm() {
+        if (event.keyCode == 13) {
+            document.getElementById("register").submit();
+        }
     }
+
+let scrollerID;
+let paused = true;
+let speed = 1; // 1 - Fast | 2 - Medium | 3 - Slow
+let interval = speed * 5;
+let userScrolled = false;  
+
+function startScroll(){
+    let id = setInterval(function() {
+        window.scrollBy(0, 2);
+        // if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        //     // Reached end of page
+        //     stopScroll();
+        // }
+    }, interval);
+    return id;
+}
+function stopScroll() {
+    clearInterval(scrollerID);
+}
+
+
+document.body.addEventListener('keypress', function (event)
+{
+    if (event.which == 13 || event.keyCode == 13) {
+        // It's the 'Enter' key
+        startScroll();
+        userScroll = false;
+
+    }
+
+}, true);
+
 </script>
+
 {% endblock %}
 
 

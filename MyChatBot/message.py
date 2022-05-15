@@ -6,25 +6,34 @@ import requests
 import json
 import math
 
+from hospital import Patient
+
 API_KEY = 'AIzaSyDkvVLM_wuruRZGERL0ZsMCAWfgBarVrEQ'
 account_sid = 'AC41e0182be023d4100adb8c6928fdca7f'
 auth_token = '1e8b2418b4920164ed2756dca1a63278'
 client = Client(account_sid, auth_token)
 
+descending = Patient.query.order_by(Patient.id.desc())
+patient = descending.first()
+
+# print(patient.address)
+# print(patient.mobile_phone)
+
 class Phone():
     sid = 'MGf240f55269be853d1089f92e87860b1d'
 
-    # IS THIS HOW UR SUPPOSED TO USE INIT???
     def __init__(self, hospital, time, number):
         self.hospital = hospital
         # doctor or nurse inputs the time, but for now time is 10 minutes
         self.time = time
         self.number = number
 
+    # sends a message with hospital, arrival // departure time and hospital google maps link
+    # TODO: we can change the time to include driving time ... idk if this is necessary tho
     def send_message(self):
         message = client.messages.create(
             messaging_service_sid='MGf240f55269be853d1089f92e87860b1d',
-            body='Please arrive at ' + self.hospital[0] + ' in ' + str(self.time) + ' minutes',
+            body='Please arrive at ' + self.hospital[0] + ' in ' + str(self.time) + ' minutes\n' + 'https://www.google.com/maps/search/?api=1&query=' + self.hospital[0].replace(" ", "+"),
             to='+' + str(self.number)
         )
 
@@ -43,17 +52,10 @@ def get_lat_lng(address):
         pass
     return lat, lng
 
-# this will be used to get the address from the database
-def get_address():
-    return 0
-
-# this will be used to get the address from the database
-def get_number():
-    return 0
-
+# finding the nearest hospital, returned in the form
 def find_hospital():
 
-    lat, lng = get_lat_lng(get_address())
+    lat, lng = get_lat_lng(patient.address)
 
     radius = 5000
 
@@ -84,5 +86,5 @@ def find_hospital():
     return closest_hospital
 
 # the 10 is temporary, just there bc we dont currently have a way to communicate with the hospital TT
-text = Phone(find_hospital(), 10, get_number())
+text = Phone(find_hospital(), 10, patient.mobile_phone)
 text.send_message()
