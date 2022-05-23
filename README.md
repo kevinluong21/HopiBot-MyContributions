@@ -5,7 +5,7 @@ https://devpost.com/software/hospital-bot
 
 ### Submitted for HawkHacks 2022
 - Won Second Place
-- Won Twilio MLH Category
+- Won Twilio MLH Category 
 
 ### Contributors
 - [@kevinluong21](https://github.com/kevinluong21)
